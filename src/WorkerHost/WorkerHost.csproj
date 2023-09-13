@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <Import Project="..\AssemblyInfo.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>SoftWell.RtClearing.WorkerHost</AssemblyName>
+    <RootNamespace>SoftWell.RtClearing.WorkerHost</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="serilog.sinks.async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2" />
+
+    <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="7.1.1" />
+    <PackageReference Include="SoftWell.RtCodes.Sources.Csv" Version="7.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\RtFix\RtFix.csproj" />
+    <ProjectReference Include="..\Moex\Moex.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" Condition="Exists('appsettings.json')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="appsettings.local.json" Condition="Exists('appsettings.local.json') and '$(Configuration)' == 'Debug'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="codes-mapping-dev.csv" Condition="Exists('codes-mapping-dev.csv')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Rt/FIXT11.xml" Condition="Exists('fix-configs/Rt/FIXT11.xml')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Rt/FIXRTv1.xml" Condition="Exists('fix-configs/Rt/FIXRTv1.xml')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Rt/SessionSettings.cfg" Condition="Exists('fix-configs/Rt/SessionSettings.cfg')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Rt/SessionSettings.local.cfg" Condition="Exists('fix-configs/Rt/SessionSettings.local.cfg') and '$(Configuration)' == 'Debug'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+
+    <None Include="fix-configs/Moex/FIX50SP2_MOEX.xml" Condition="Exists('fix-configs/Moex/FIX50SP2_MOEX.xml')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Moex/FIXT11_MOEX.xml" Condition="Exists('fix-configs/Moex/FIXT11_MOEX.xml')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Moex/SessionSettings.cfg" Condition="Exists('fix-configs/Moex/SessionSettings.cfg')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fix-configs/Moex/SessionSettings.local.cfg" Condition="Exists('fix-configs/Moex/SessionSettings.local.cfg') and '$(Configuration)' == 'Debug'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
