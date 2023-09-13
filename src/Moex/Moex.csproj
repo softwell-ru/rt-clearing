@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\AssemblyInfo.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>SoftWell.RtClearing.Moex</AssemblyName>
+    <RootNamespace>SoftWell.RtClearing.Moex</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SoftWell.Fix.Initiator" Version="7.2.0.1" />
+    <PackageReference Include="SoftWell.RtCodes.Abstractions" Version="7.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

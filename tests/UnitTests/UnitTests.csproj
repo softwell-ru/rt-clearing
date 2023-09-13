@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\src\AssemblyInfo.props" />
+    <Import Project="..\TestsAssemblyInfo.props" />
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <AssemblyName>SoftWell.RtClearing.UnitTests</AssemblyName>
+        <RootNamespace>SoftWell.RtClearing.UnitTests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Abstractions\Abstractions.csproj" />
+        <ProjectReference Include="..\..\src\RtFix\RtFix.csproj" />
+        <ProjectReference Include="..\..\src\Moex\Moex.csproj" />
+        <ProjectReference Include="..\..\src\Testing\Testing.csproj" />
+    </ItemGroup>
+
+</Project>
+

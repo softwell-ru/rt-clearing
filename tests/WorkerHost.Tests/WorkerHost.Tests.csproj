@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\src\AssemblyInfo.props" />
+    <Import Project="..\TestsAssemblyInfo.props" />
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <AssemblyName>SoftWell.RtClearing.WorkerHost.Tests</AssemblyName>
+        <RootNamespace>SoftWell.RtClearing.WorkerHost.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\WorkerHost\WorkerHost.csproj" />
+        <ProjectReference Include="..\..\src\Testing\Testing.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SoftWell.Fix.Initiator.Testing" Version="7.2.0.1" />
+    </ItemGroup>
+
+</Project>
+

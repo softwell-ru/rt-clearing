@@ -1,0 +1,21 @@
+SourceScheme;SourceCodeValue;TargetScheme;TargetCodeValue
+# ---------------------------------------------------------------------------------------------------------
+# PARTIES
+# ---------------------------------------------------------------------------------------------------------
+https://hihiclub.ru/coding-schemes/partner;SOFT;http://www.moex.com/rms/coding-scheme/customer;MB0017100000
+https://hihiclub.ru/coding-schemes/partner;TEST;http://www.moex.com/rms/coding-scheme/customer;MB9049200000
+# PRODUCTS
+# ---------------------------------------------------------------------------------------------------------
+# USD-RUB
+https://hihiclub.ru/coding-schemes/instrument-id;FX-USD-RUB-TOM;http://www.moex.com/spfi/coding-scheme/instrument-id;USD000UTSTOM
+https://hihiclub.ru/coding-schemes/instrument-id;FX-USD-RUB-SPOT;http://www.moex.com/spfi/coding-scheme/instrument-id;USDRUB_SPT
+https://hihiclub.ru/coding-schemes/instrument-id;FX-USD-RUB-TOD-XXX;http://www.moex.com/spfi/coding-scheme/instrument-id;USD000000TOD
+# EUR-RUB
+https://hihiclub.ru/coding-schemes/instrument-id;FX-EUR-RUB-TODAY;http://www.moex.com/spfi/coding-scheme/instrument-id;EUR_RUB    TOD
+https://hihiclub.ru/coding-schemes/instrument-id;FX-EUR-RUB-TOM;http://www.moex.com/spfi/coding-scheme/instrument-id;EUR_RUB    TOM
+# EUR-USD
+https://hihiclub.ru/coding-schemes/instrument-id;FX-EUR-USD-TOD;http://www.moex.com/spfi/coding-scheme/instrument-id;EURUSD000TOD
+# CNY-RUB
+https://hihiclub.ru/coding-schemes/instrument-id;FX-CNY-RUB-TOM;http://www.moex.com/spfi/coding-scheme/instrument-id;CNYRUB_TOM
+# USD-CNY
+https://hihiclub.ru/coding-schemes/instrument-id;FX-USD-CNY-TOD;http://www.moex.com/spfi/coding-scheme/instrument-id;USDCNY_TOD
