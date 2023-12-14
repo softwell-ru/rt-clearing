@@ -25,6 +25,12 @@ public interface IClearingMeta
     string GetTradeId();
 
     /// <summary>
+    /// Возвращает комментарий сделки
+    /// </summary>
+    /// <returns></returns>
+    string? GetComment();
+
+    /// <summary>
     /// Возвращает инструмент ордера
     /// </summary>
     /// <returns></returns>
