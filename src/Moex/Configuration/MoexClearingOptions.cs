@@ -9,4 +9,10 @@ public class MoexClearingOptions
     /// </summary>
     [Required(AllowEmptyStrings = false)]
     public string AccountId { get; set; } = null!;
+
+    /// <summary>
+    /// Передавать параметр matchref в МБ. None - не передавать. Comment - передавать в поле комментарий. 
+    /// </summary>
+    [Required(AllowEmptyStrings = false)]
+    public string UseMatchRef { get; set; } = "None";
 }

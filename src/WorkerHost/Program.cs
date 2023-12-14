@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using QuickFix;
 using Serilog;
 using SoftWell.RtClearing;
@@ -7,6 +8,9 @@ using SoftWell.RtClearing.WorkerHost.Dummy;
 
 
 Serilog.Debugging.SelfLog.Enable(Console.Error);
+
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+QuickFix.CharEncoding.DefaultEncoding = Encoding.GetEncoding("Windows-1251");
 
 var builder = Host.CreateApplicationBuilder(args);
 

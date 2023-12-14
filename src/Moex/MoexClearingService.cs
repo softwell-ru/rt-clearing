@@ -11,6 +11,11 @@ namespace SoftWell.RtClearing.Moex;
 
 public class MoexClearingService : IClearingService, IFixMessagesHandler<ExecutionReport>
 {
+    /// <summary>
+    /// Уникальный код используемый биржей в качестве контрагента  при мэтчинге заявок через matchref
+    /// </summary> 
+    private const string _matchRefCode = "*Всем";
+
     private readonly MoexClearingOptions _options;
 
     private readonly IFixMessagesSender _moexFixMessagesSender;
@@ -147,7 +152,17 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
         var leadPayerPartyHref = fxSwap.nearLeg.exchangedCurrency1.receiverPartyReference.href ?? throw new InvalidOperationException("Lead payment does not contain payer party href");
 
         var contraParty = meta.GetPartyByHref(weBuy ? leadReceiverPartyHref : leadPayerPartyHref);
-        await AddPartyAsync(res, contraParty, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+
+        switch(GetMatchRef(_options.UseMatchRef))
+        {
+            case MatchRefDirection.Comment:
+                await AddPartyAsync(res, _matchRefCode, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+                res.ClOrdLinkID = new ClOrdLinkID(GetMatchRef(meta));
+                break;
+            default:
+                await AddPartyAsync(res, contraParty, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+                break;
+        }
 
         res.OrdType = new OrdType(OrdType.FOREX_SWAP);
 
@@ -173,7 +188,17 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
         res.Price = new QuickFix.Fields.Price(price / amount);
 
         var contraParty = meta.GetPartyByHref(weBuy ? leadReceiverPartyHref : leadPayerPartyHref);
-        await AddPartyAsync(res, contraParty, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+
+        switch(GetMatchRef(_options.UseMatchRef))
+        {
+            case MatchRefDirection.Comment:
+                await AddPartyAsync(res, _matchRefCode, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+                res.ClOrdLinkID = new ClOrdLinkID(GetMatchRef(meta));
+                break;
+            default:
+                await AddPartyAsync(res, contraParty, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
+                break;
+        }
 
         res.OrdType = new OrdType(OrdType.LIMIT);
 
@@ -216,6 +241,8 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
             PartyRole = new QuickFix.Fields.PartyRole(partyRole)
         });
     }
+
+    private static string  GetMatchRef(IClearingMeta meta) => meta.GetComment() ?? throw new InvalidOperationException("Comment not found");
 
     private static (Payment leadPayment, Payment secondPayment) GetPayments(FxSingleLeg fxSingleLeg)
     {
@@ -304,6 +331,16 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
             OrdStatus.REJECTED => TradeMatchingStatus.Rejected,
 
             _ => TradeMatchingStatus.Other
+        };
+    }
+
+     private static MatchRefDirection GetMatchRef(string matchrefParam)
+    {
+
+        return matchrefParam switch
+        {
+            "Comment" => MatchRefDirection.Comment,
+            _ => MatchRefDirection.None
         };
     }
 }
