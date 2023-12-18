@@ -49,7 +49,7 @@ internal class DataDocumentClearingMeta : IClearingMeta
 
     public string? GetComment()
     {
-        return _documentation?.attachment?.FirstOrDefault()?.resourceType?.Value;
+        return _documentation?.attachment?.FirstOrDefault()?.Item.ToString();
     }
 
     /// <inheritdoc />

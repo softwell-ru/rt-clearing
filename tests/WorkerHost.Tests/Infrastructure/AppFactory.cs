@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -5,6 +6,7 @@ using QuickFix.FIX50SP2;
 using SoftWell.Fix.Initiator.Rt;
 using SoftWell.Fix.Initiator.Testing;
 using SoftWell.RtClearing.Moex;
+using SoftWell.RtClearing.Moex.Configuration;
 using SoftWell.RtClearing.RtFix;
 using SoftWell.RtClearing.Testing;
 using SoftWell.RtCodes;
@@ -15,13 +17,32 @@ public class AppFactory : IDisposable, IAsyncDisposable
 {
     private readonly Action<IServiceCollection>? _configureServices;
 
+    private readonly MoexClearingOptions _options;
+
     private IHost _host;
 
     public AppFactory(
         Action<IServiceCollection>? configureServices = null)
     {
         _configureServices = configureServices;
+        _options = new Moex.Configuration.MoexClearingOptions
+        {
+            AccountId = "111"
+        };
+        _host = CreateHostBuilder().Build();
+        _host.Start();
+    }
 
+    public AppFactory(
+        string matchref,
+        Action<IServiceCollection>? configureServices = null)
+    {
+        _configureServices = configureServices;
+        _options = new Moex.Configuration.MoexClearingOptions
+        {
+            AccountId = "111",
+            UseMatchRef = matchref
+        };
         _host = CreateHostBuilder().Build();
         _host.Start();
     }
@@ -75,7 +96,6 @@ public class AppFactory : IDisposable, IAsyncDisposable
 
         services.AddCodesConversion(
             opts => opts.AddCsvHttpSource(new Uri("https://confluence.softwell.ru/download/attachments/211877976/codes-mapping-dev.csv?api=v2")));
-
         services.AddXmlFpmlConfirmationSerialization();
 
         services.AddDefaultClearingMetaExtractor();
@@ -89,10 +109,7 @@ public class AppFactory : IDisposable, IAsyncDisposable
                 {
                     var client = sp.GetRequiredService<IMoexFixClient>();
                     return new MoexClearingService(
-                        new Moex.Configuration.MoexClearingOptions
-                        {
-                            AccountId = "111"
-                        },
+                        _options,
                         client,
                         sp.GetRequiredService<ICodesConverter>(),
                         sp.GetRequiredService<IRtTradeReporter>(),
