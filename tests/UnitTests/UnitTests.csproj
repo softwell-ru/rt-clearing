@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-    <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="1.0.0" />
+    <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="7.1.0.0" />
     </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@ using SoftWell.RtCodes;
 namespace SoftWell.RtClearing.UnitTests;
 
 [TestClass]
-public class MatchRefUnitTest
+public class MoexMatchRefTests
 {
     private readonly Mock<IFixMessagesSender> _messageSender = new(MockBehavior.Strict);
 
@@ -38,19 +38,16 @@ public class MatchRefUnitTest
             AccountId = "111",
             UseMatchRefSource = MatchRefDirection.Comment
         };
-         
-        var ct = new CancellationToken();
 
-        ICodesConverter codesMock = new CodesConverterMock();
+        ICodesConverter codesTest = new CodesConverterTest();
 
-        var moexService = new MoexClearingService(options, _messageSender.Object, codesMock,_rtTradeReport.Object,new NullLogger<MoexClearingService>());
+        var moexService = new MoexClearingService(options, _messageSender.Object, codesTest,_rtTradeReport.Object,new NullLogger<MoexClearingService>());
 
         var ds = new DefaultClearingMetaExtractor();
         var meta = ds.Extract(serializer.DeserializeFromUtf8String(_commentFpml));
-        var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => moexService.RequestClearingAsync(meta, ct));
+        var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => moexService.RequestClearingAsync(meta));
         var exMessage = ex.Message;
-
-        Assert.IsNotNull(exMessage);
+        
         Assert.AreEqual(exMessage, "Comment not found");
     }
 
@@ -153,13 +150,11 @@ public class MatchRefUnitTest
 """;
 }
 
-public class CodesConverterMock : ICodesConverter
+public class CodesConverterTest : ICodesConverter
 {
-    private static readonly string _codes = "*Всем";
-    
     public async ValueTask<string?> ConvertOrDefaultAsync(string code, string sourceScheme, string targetScheme, CancellationToken ct = default)
     {
         await Task.Delay(0);
-        return _codes;
+        return code;
     }
 }

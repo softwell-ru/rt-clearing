@@ -21,7 +21,7 @@ public class TestMatchRef
     private static readonly string _tradeIdForParty1 = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
 
     [TestMethod]
-    public async Task When_comment_exists_and_matchref_on()
+    public async Task When_Сomment_Exists_And_Matchref_On_Set_ClorIDLink()
     {
         //Определяем режим мэтчинга сделки через комментарий сделки
         await using var f = new AppFactory(srv => srv.AddSingleton(new MoexClearingOptions
@@ -34,7 +34,7 @@ public class TestMatchRef
 
         var awaiter = f.MoexFixClientMock.WaitForOutgoingMessageAsync<NewOrderSingle>(
             NewOrderSingle.MsgType,
-            x => x.IsSetClOrdLinkID() && x.ClOrdLinkID.getValue() == _comment);
+            x => x.IsSetClOrdLinkID() && x.ClOrdLinkID.getValue() == _comment && x.ClOrdID.getValue() == _tradeIdForParty1);
 
         f.DocumentsSource.EmulateDocument(serializer.DeserializeFromUtf8String(_commentFpml));
 
@@ -55,7 +55,7 @@ public class TestMatchRef
 
         var awaiter = f.MoexFixClientMock.WaitForOutgoingMessageAsync<NewOrderSingle>(
             NewOrderSingle.MsgType,
-            x => !x.IsSetClOrdLinkID());
+            x => !x.IsSetClOrdLinkID() && x.IsSetClOrdID() && x.ClOrdID.getValue() == _tradeIdForParty1);
 
         f.DocumentsSource.EmulateDocument(serializer.DeserializeFromUtf8String(_commentFpml));
 

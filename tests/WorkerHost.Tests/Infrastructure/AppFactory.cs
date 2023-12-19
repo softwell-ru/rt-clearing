@@ -89,7 +89,7 @@ public class AppFactory : IDisposable, IAsyncDisposable
                 {
                     var client = sp.GetRequiredService<IMoexFixClient>();
                 return new MoexClearingService(
-                    sp.GetRequiredService<MoexClearingOptions>(),
+                        sp.GetRequiredService<MoexClearingOptions>(),
                         client,
                         sp.GetRequiredService<ICodesConverter>(),
                         sp.GetRequiredService<IRtTradeReporter>(),

@@ -14,14 +14,14 @@ internal class DataDocumentClearingMeta : IClearingMeta
 
     private readonly Lazy<Party> _ourParty;
 
-    private readonly Documentation? _documentation;
+    private readonly Lazy<Documentation?> _documentation;
 
     public DataDocumentClearingMeta(DataDocument dataDocument)
     {
         DataDocument = dataDocument ?? throw new ArgumentNullException(nameof(dataDocument));
         _trade = new Lazy<Trade>(() => GetTradeOrDefaut(DataDocument) ?? throw new InvalidOperationException("Document contains no trades"));
         _ourParty = new Lazy<Party>(() => GetOurPartyOrDefault(DataDocument) ?? throw new InvalidOperationException("Document doesn't contain our party"));
-        _documentation = GetDocumentation(DataDocument);
+        _documentation = new Lazy<Documentation?>(() => GetDocumentation(_trade.Value));
     }
 
     public DataDocument DataDocument { get; }
@@ -49,7 +49,7 @@ internal class DataDocumentClearingMeta : IClearingMeta
 
     public string? GetComment()
     {
-        return _documentation?.attachment?.FirstOrDefault()?.Item.ToString();
+        return _documentation?.Value?.attachment?.FirstOrDefault()?.Item.ToString();
     }
 
     /// <inheritdoc />
@@ -102,9 +102,9 @@ internal class DataDocumentClearingMeta : IClearingMeta
         return GetPartyByHrefOrDefault(dataDocument, href);
     }
 
-    internal static Documentation? GetDocumentation(DataDocument dataDocument)
+    internal static Documentation? GetDocumentation(Trade trade)
     {
-        var documentation = dataDocument?.trade.FirstOrDefault()?.documentation;
+        var documentation = trade.documentation;
         return documentation;
     }
 
