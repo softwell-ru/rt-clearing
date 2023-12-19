@@ -16,11 +16,6 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
     /// </summary> 
     private const string _matchRefCode = "*Всем";
 
-    /// <summary>
-    /// Уникальный код используемый биржей в качестве контрагента  при мэтчинге заявок через matchref
-    /// </summary> 
-    private const string _matchRefCode = "*Всем";
-
     private readonly MoexClearingOptions _options;
 
     private readonly IFixMessagesSender _moexFixMessagesSender;
