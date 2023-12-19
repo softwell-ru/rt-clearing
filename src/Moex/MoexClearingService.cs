@@ -330,14 +330,4 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
             _ => TradeMatchingStatus.Other
         };
     }
-
-    private static MatchRefDirection GetMatchRef(string matchrefParam)
-    {
-
-        return matchrefParam switch
-        {
-            "Comment" => MatchRefDirection.Comment,
-            _ => MatchRefDirection.None
-        };
-    }
 }
