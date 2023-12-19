@@ -153,7 +153,7 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
 
         var contraParty = meta.GetPartyByHref(weBuy ? leadReceiverPartyHref : leadPayerPartyHref);
 
-        switch(GetMatchRef(_options.UseMatchRef))
+        switch(_options.UseMatchRefSource)
         {
             case MatchRefDirection.Comment:
                 await AddPartyAsync(res, _matchRefCode, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
@@ -189,7 +189,7 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
 
         var contraParty = meta.GetPartyByHref(weBuy ? leadReceiverPartyHref : leadPayerPartyHref);
 
-        switch(GetMatchRef(_options.UseMatchRef))
+        switch(_options.UseMatchRefSource)
         {
             case MatchRefDirection.Comment:
                 await AddPartyAsync(res, _matchRefCode, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
@@ -331,16 +331,6 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
             OrdStatus.REJECTED => TradeMatchingStatus.Rejected,
 
             _ => TradeMatchingStatus.Other
-        };
-    }
-
-     private static MatchRefDirection GetMatchRef(string matchrefParam)
-    {
-
-        return matchrefParam switch
-        {
-            "Comment" => MatchRefDirection.Comment,
-            _ => MatchRefDirection.None
         };
     }
 }

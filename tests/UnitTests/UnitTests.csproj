@@ -18,6 +18,7 @@
         <ProjectReference Include="..\..\src\RtFix\RtFix.csproj" />
         <ProjectReference Include="..\..\src\Moex\Moex.csproj" />
         <ProjectReference Include="..\..\src\Testing\Testing.csproj" />
+        <ProjectReference Include="..\..\tests\WorkerHost.Tests\WorkerHost.Tests.csproj" />
     </ItemGroup>
 
 </Project>

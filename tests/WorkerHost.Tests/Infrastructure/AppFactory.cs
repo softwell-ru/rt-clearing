@@ -1,4 +1,3 @@
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,32 +16,12 @@ public class AppFactory : IDisposable, IAsyncDisposable
 {
     private readonly Action<IServiceCollection>? _configureServices;
 
-    private readonly MoexClearingOptions _options;
-
     private IHost _host;
 
     public AppFactory(
         Action<IServiceCollection>? configureServices = null)
     {
         _configureServices = configureServices;
-        _options = new Moex.Configuration.MoexClearingOptions
-        {
-            AccountId = "111"
-        };
-        _host = CreateHostBuilder().Build();
-        _host.Start();
-    }
-
-    public AppFactory(
-        string matchref,
-        Action<IServiceCollection>? configureServices = null)
-    {
-        _configureServices = configureServices;
-        _options = new Moex.Configuration.MoexClearingOptions
-        {
-            AccountId = "111",
-            UseMatchRef = matchref
-        };
         _host = CreateHostBuilder().Build();
         _host.Start();
     }
@@ -90,6 +69,7 @@ public class AppFactory : IDisposable, IAsyncDisposable
         services.AddSingleton<IDocumentsSource>(DocumentsSource);
         services.AddSingleton(RtFixClientMock.Object);
         services.AddSingleton<IRtFixMapper, RtFixMapper>();
+        services.AddSingleton<MoexClearingOptions>();
         services.AddSingleton<IRtTradeReporter, RtFixTradeReporter<IRtFixClient>>();
 
         services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
@@ -108,8 +88,8 @@ public class AppFactory : IDisposable, IAsyncDisposable
                 b.Services.AddSingleton(sp =>
                 {
                     var client = sp.GetRequiredService<IMoexFixClient>();
-                    return new MoexClearingService(
-                        _options,
+                return new MoexClearingService(
+                    sp.GetRequiredService<MoexClearingOptions>(),
                         client,
                         sp.GetRequiredService<ICodesConverter>(),
                         sp.GetRequiredService<IRtTradeReporter>(),

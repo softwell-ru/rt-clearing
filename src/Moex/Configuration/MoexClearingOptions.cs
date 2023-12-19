@@ -14,5 +14,5 @@ public class MoexClearingOptions
     /// Передавать параметр matchref в МБ. None - не передавать. Comment - передавать в поле комментарий. 
     /// </summary>
     [Required(AllowEmptyStrings = false)]
-    public string UseMatchRef { get; set; } = "None";
+    public MatchRefDirection UseMatchRefSource { get; set; } = MatchRefDirection.None;
 }

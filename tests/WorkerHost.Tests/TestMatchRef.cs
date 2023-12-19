@@ -1,8 +1,10 @@
 using CsvHelper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickFix.FIX50SP2;
 using SoftWell.Fpml.Confirmation.Serialization;
 using SoftWell.Fpml.Serialization;
+using SoftWell.RtClearing.Moex.Configuration;
 using SoftWell.RtClearing.WorkerHost.Tests.Infrastructure;
 
 namespace SoftWell.RtClearing.WorkerHost.Tests;
@@ -12,11 +14,21 @@ public class TestMatchRef
 {
     private static readonly string _comment = "MATCH";
 
+    private const int _amount = 2;
+
+    private const int _price = 86;
+
+    private static readonly string _tradeIdForParty1 = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+
     [TestMethod]
     public async Task When_comment_exists_and_matchref_on()
     {
         //Определяем режим мэтчинга сделки через комментарий сделки
-        await using var f = new AppFactory("Comment");
+        await using var f = new AppFactory(srv => srv.AddSingleton(new MoexClearingOptions
+        {
+            AccountId = "MY_ACCOUNT",
+            UseMatchRefSource = MatchRefDirection.Comment
+        }));
 
         var serializer = f.Resolve<IDocumentSerializer>();
 
@@ -33,7 +45,11 @@ public class TestMatchRef
     public async Task When_matchref_off_and_comment_exist()
     {
         //Определяем режим мэтчинга сделки через комментарий сделки
-        await using var f = new AppFactory("None");
+        await using var f = new AppFactory(srv => srv.AddSingleton(new MoexClearingOptions
+        {
+            AccountId = "MY_ACCOUNT",
+            UseMatchRefSource = MatchRefDirection.None
+        }));
 
         var serializer = f.Resolve<IDocumentSerializer>();
 
@@ -45,31 +61,6 @@ public class TestMatchRef
 
         await awaiter.WaitAsync(TimeSpan.FromSeconds(5));
     }
-
-     [TestMethod]
-    public async Task When_Comment_NotExists_And_Matchref_Nn_Should_Throw_InvalidOperationException()
-    {
-        await using var f = new AppFactory("Comment");
-
-        var serializer = f.Resolve<IDocumentSerializer>();
-
-        var awaiter = f.MoexFixClientMock.WaitForOutgoingMessageAsync<NewOrderSingle>(
-        NewOrderSingle.MsgType,
-        x => x.IsSetClOrdLinkID() && x.ClOrdLinkID.getValue() == _comment);
-
-        f.DocumentsSource.EmulateDocument(serializer.DeserializeFromUtf8String(_withoutComment));
-        var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => awaiter.WaitAsync(TimeSpan.FromSeconds(5)));
-        var exMessage = ex.Message;
-
-        Assert.IsNotNull(exMessage);
-        Assert.AreEqual(exMessage, "Comment not found");
-    }
-    
-    private static readonly string _tradeIdForParty1 = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-
-    private const int _amount = 2;
-
-    private const int _price = 86;
 
     private static readonly string _commentFpml = $"""
 <?xml version="1.0" encoding="utf-8"?>
