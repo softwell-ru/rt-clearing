@@ -1,14 +1,14 @@
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using QuickFix;
 using SoftWell.Fix.Initiator;
+using SoftWell.Fpml.Confirmation;
 using SoftWell.Fpml.Confirmation.Serialization;
+using SoftWell.Fpml.Confirmation.Serialization.Xml;
 using SoftWell.Fpml.Serialization;
+using SoftWell.Fpml.Serialization.Xml;
 using SoftWell.RtClearing.Moex;
 using SoftWell.RtClearing.Moex.Configuration;
-using SoftWell.RtClearing.WorkerHost.Tests.Infrastructure;
 using SoftWell.RtCodes;
 
 namespace SoftWell.RtClearing.UnitTests;
@@ -30,9 +30,8 @@ public class MatchRefUnitTest
     [TestMethod]
     public async Task When_Comment_NotExists_And_Matchref_Nn_Should_Throw_InvalidperationExceptionAsync()
     {
-        await using var f = new AppFactory();
 
-        var serializer = f.Resolve<IDocumentSerializer>();
+        var serializer = new XmlDocumentSerializer(new XmlSerializationOptions<Document>());
 
         var options = new MoexClearingOptions
         {
@@ -157,6 +156,7 @@ public class MatchRefUnitTest
 public class CodesConverterMock : ICodesConverter
 {
     private static readonly string _codes = "*Всем";
+    
     public async ValueTask<string?> ConvertOrDefaultAsync(string code, string sourceScheme, string targetScheme, CancellationToken ct = default)
     {
         await Task.Delay(0);
