@@ -20,6 +20,8 @@ public class MoexMatchRefTests
 
     private readonly Mock<IRtTradeReporter> _rtTradeReport = new(MockBehavior.Strict);
 
+    private readonly Mock<ICodesConverter> _codesConverter = new(MockBehavior.Strict);
+
     private const int _amount = 2;
 
     private const int _price = 86;
@@ -39,15 +41,21 @@ public class MoexMatchRefTests
             UseMatchRefSource = MatchRefDirection.Comment
         };
 
-        ICodesConverter codesTest = new CodesConverterTest();
-
-        var moexService = new MoexClearingService(options, _messageSender.Object, codesTest,_rtTradeReport.Object,new NullLogger<MoexClearingService>());
+        _codesConverter.Setup(x => x.ConvertOrDefaultAsync("SOFT", "https://hihiclub.ru/coding-schemes/partner", "http://www.moex.com/rms/coding-scheme/customer", It.IsAny<CancellationToken>()))
+        .ReturnsAsync("MB0017100000");
+        _codesConverter.Setup(x => x.ConvertOrDefaultAsync("FX-USD-RUB-TOM", "https://hihiclub.ru/coding-schemes/instrument-id", "http://www.moex.com/spfi/coding-scheme/instrument-id", It.IsAny<CancellationToken>()))
+        .ReturnsAsync("USD000UTSTOM");
+        _codesConverter.Setup(x => x.ConvertOrDefaultAsync("*Всем", "https://hihiclub.ru/coding-schemes/partner", "http://www.moex.com/rms/coding-scheme/customer", It.IsAny<CancellationToken>()))
+        .ReturnsAsync("*Всем");
+        _codesConverter.Setup(x => x.ConvertOrDefaultAsync("TEST", "https://hihiclub.ru/coding-schemes/partner", "http://www.moex.com/rms/coding-scheme/customer", It.IsAny<CancellationToken>()))
+        .ReturnsAsync("MB9049200000");
+        var moexService = new MoexClearingService(options, _messageSender.Object, _codesConverter.Object, _rtTradeReport.Object, new NullLogger<MoexClearingService>());
 
         var ds = new DefaultClearingMetaExtractor();
         var meta = ds.Extract(serializer.DeserializeFromUtf8String(_commentFpml));
         var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => moexService.RequestClearingAsync(meta));
         var exMessage = ex.Message;
-        
+
         Assert.AreEqual(exMessage, "Comment not found");
     }
 
@@ -148,13 +156,4 @@ public class MoexMatchRefTests
   <account id="Party1Account3" />
 </dataDocument>
 """;
-}
-
-public class CodesConverterTest : ICodesConverter
-{
-    public async ValueTask<string?> ConvertOrDefaultAsync(string code, string sourceScheme, string targetScheme, CancellationToken ct = default)
-    {
-        await Task.Delay(0);
-        return code;
-    }
 }
