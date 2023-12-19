@@ -21,7 +21,7 @@ internal class DataDocumentClearingMeta : IClearingMeta
         DataDocument = dataDocument ?? throw new ArgumentNullException(nameof(dataDocument));
         _trade = new Lazy<Trade>(() => GetTradeOrDefaut(DataDocument) ?? throw new InvalidOperationException("Document contains no trades"));
         _ourParty = new Lazy<Party>(() => GetOurPartyOrDefault(DataDocument) ?? throw new InvalidOperationException("Document doesn't contain our party"));
-        _documentation = new Lazy<Documentation?>(() => GetDocumentation(_trade));
+        _documentation = new Lazy<Documentation?>(() => GetDocumentation());
     }
 
     public DataDocument DataDocument { get; }
@@ -102,9 +102,9 @@ internal class DataDocumentClearingMeta : IClearingMeta
         return GetPartyByHrefOrDefault(dataDocument, href);
     }
 
-    internal static Documentation? GetDocumentation(Lazy <Trade> trade)
+    private  Documentation? GetDocumentation()
     {
-        var documentation = trade.Value.documentation;
+        var documentation = _trade.Value.documentation;
         return documentation;
     }
 
