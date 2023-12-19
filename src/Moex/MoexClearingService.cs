@@ -16,6 +16,11 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
     /// </summary> 
     private const string _matchRefCode = "*Всем";
 
+    /// <summary>
+    /// Уникальный код используемый биржей в качестве контрагента  при мэтчинге заявок через matchref
+    /// </summary> 
+    private const string _matchRefCode = "*Всем";
+
     private readonly MoexClearingOptions _options;
 
     private readonly IFixMessagesSender _moexFixMessagesSender;
@@ -224,9 +229,9 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
         });
     }
 
-    private async ValueTask AddPartyMatchRefOrContraAsync(NewOrderSingle order,IClearingMeta meta, string contraParty, CancellationToken ct)
+    private async ValueTask AddPartyMatchRefOrContraAsync(NewOrderSingle order, IClearingMeta meta, string contraParty, CancellationToken ct)
     {
-        switch(_options.UseMatchRefSource)
+        switch (_options.UseMatchRefSource)
         {
             case MatchRefDirection.Comment:
                 await AddPartyAsync(order, _matchRefCode, QuickFix.Fields.PartyRole.CONTRA_FIRM, ct);
@@ -239,7 +244,7 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
         }
     }
 
-    private static string  GetMatchRefFromComment(IClearingMeta meta) => meta.GetComment() ?? throw new InvalidOperationException("Comment not found");
+    private static string GetMatchRefFromComment(IClearingMeta meta) => meta.GetComment() ?? throw new InvalidOperationException("Comment not found");
 
     private static (Payment leadPayment, Payment secondPayment) GetPayments(FxSingleLeg fxSingleLeg)
     {
@@ -328,6 +333,16 @@ public class MoexClearingService : IClearingService, IFixMessagesHandler<Executi
             OrdStatus.REJECTED => TradeMatchingStatus.Rejected,
 
             _ => TradeMatchingStatus.Other
+        };
+    }
+
+    private static MatchRefDirection GetMatchRef(string matchrefParam)
+    {
+
+        return matchrefParam switch
+        {
+            "Comment" => MatchRefDirection.Comment,
+            _ => MatchRefDirection.None
         };
     }
 }

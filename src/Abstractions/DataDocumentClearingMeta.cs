@@ -102,7 +102,7 @@ internal class DataDocumentClearingMeta : IClearingMeta
         return GetPartyByHrefOrDefault(dataDocument, href);
     }
 
-    private  Documentation? GetDocumentation()
+    private Documentation? GetDocumentation()
     {
         var documentation = _trade.Value.documentation;
         return documentation;
