@@ -87,10 +87,9 @@ public class AppFactory : IDisposable, IAsyncDisposable
 
                 b.Services.AddSingleton(sp =>
                 {
-                    var client = sp.GetRequiredService<IMoexFixClient>();
-                return new MoexClearingService(
+                    return new MoexClearingService(
                         sp.GetRequiredService<MoexClearingOptions>(),
-                        client,
+                        sp.GetRequiredService<IMoexFixClient>(),
                         sp.GetRequiredService<ICodesConverter>(),
                         sp.GetRequiredService<IRtTradeReporter>(),
                         sp.GetRequiredService<ILogger<MoexClearingService>>());
