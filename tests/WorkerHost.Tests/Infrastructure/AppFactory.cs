@@ -5,6 +5,7 @@ using QuickFix.FIX50SP2;
 using SoftWell.Fix.Initiator.Rt;
 using SoftWell.Fix.Initiator.Testing;
 using SoftWell.RtClearing.Moex;
+using SoftWell.RtClearing.Moex.Configuration;
 using SoftWell.RtClearing.RtFix;
 using SoftWell.RtClearing.Testing;
 using SoftWell.RtCodes;
@@ -21,7 +22,6 @@ public class AppFactory : IDisposable, IAsyncDisposable
         Action<IServiceCollection>? configureServices = null)
     {
         _configureServices = configureServices;
-
         _host = CreateHostBuilder().Build();
         _host.Start();
     }
@@ -69,13 +69,13 @@ public class AppFactory : IDisposable, IAsyncDisposable
         services.AddSingleton<IDocumentsSource>(DocumentsSource);
         services.AddSingleton(RtFixClientMock.Object);
         services.AddSingleton<IRtFixMapper, RtFixMapper>();
+        services.AddSingleton<MoexClearingOptions>();
         services.AddSingleton<IRtTradeReporter, RtFixTradeReporter<IRtFixClient>>();
 
         services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
 
         services.AddCodesConversion(
             opts => opts.AddCsvHttpSource(new Uri("https://confluence.softwell.ru/download/attachments/211877976/codes-mapping-dev.csv?api=v2")));
-
         services.AddXmlFpmlConfirmationSerialization();
 
         services.AddDefaultClearingMetaExtractor();
@@ -87,13 +87,9 @@ public class AppFactory : IDisposable, IAsyncDisposable
 
                 b.Services.AddSingleton(sp =>
                 {
-                    var client = sp.GetRequiredService<IMoexFixClient>();
                     return new MoexClearingService(
-                        new Moex.Configuration.MoexClearingOptions
-                        {
-                            AccountId = "111"
-                        },
-                        client,
+                        sp.GetRequiredService<MoexClearingOptions>(),
+                        sp.GetRequiredService<IMoexFixClient>(),
                         sp.GetRequiredService<ICodesConverter>(),
                         sp.GetRequiredService<IRtTradeReporter>(),
                         sp.GetRequiredService<ILogger<MoexClearingService>>());

@@ -20,5 +20,9 @@
         <ProjectReference Include="..\..\src\Testing\Testing.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+    <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="7.1.0.0" />
+    </ItemGroup>
+
 </Project>
 
