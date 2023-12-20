@@ -30,7 +30,7 @@ public class MoexMatchRefTests
 
 
     [TestMethod]
-    public async Task When_Comment_NotExists_And_Matchref_Nn_Should_Throw_InvalidperationExceptionAsync()
+    public async Task When_Comment_NotExists_And_Matchref_On_Should_Throw_InvalidOperationException()
     {
 
         var serializer = new XmlDocumentSerializer(new XmlSerializationOptions<Document>());
