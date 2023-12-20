@@ -42,7 +42,7 @@ public class TestMatchRef
     }
 
     [TestMethod]
-    public async Task When_matchref_off_and_comment_exist()
+    public async Task When_Matchref_Off_And_comment_Exist_Dont_Use_ClOrdLinkID()
     {
         //Определяем режим мэтчинга сделки через комментарий сделки
         await using var f = new AppFactory(srv => srv.AddSingleton(new MoexClearingOptions
@@ -166,7 +166,7 @@ public class TestMatchRef
 </dataDocument>
 """;
 
-private static readonly string _withoutComment = $"""
+    private static readonly string _withoutComment = $"""
 <?xml version="1.0" encoding="utf-8"?>
 <dataDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" actualBuild="8" xmlns="http://www.fpml.org/FpML-5/confirmation">
   <onBehalfOf>
