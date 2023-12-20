@@ -42,7 +42,7 @@ public class TestMatchRef
     }
 
     [TestMethod]
-    public async Task When_Matchref_Off_And_comment_Exist_Dont_Use_ClOrdLinkID()
+    public async Task When_Matchref_Off_And_Сomment_Exist_Dont_Use_ClOrdLinkID()
     {
         //Определяем режим мэтчинга сделки через комментарий сделки
         await using var f = new AppFactory(srv => srv.AddSingleton(new MoexClearingOptions
