@@ -3,15 +3,15 @@
   <Import Project="..\AssemblyInfo.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SoftWell.RtClearing.Moex</AssemblyName>
     <RootNamespace>SoftWell.RtClearing.Moex</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SoftWell.Fix.Initiator" Version="7.2.0.1" />
-    <PackageReference Include="SoftWell.RtCodes.Abstractions" Version="7.1.0" />
+    <PackageReference Include="SoftWell.Fix.Initiator" Version="7.4.0" />
+    <PackageReference Include="SoftWell.RtCodes.Abstractions" Version="7.4.0" />
   </ItemGroup>
 
   <ItemGroup>

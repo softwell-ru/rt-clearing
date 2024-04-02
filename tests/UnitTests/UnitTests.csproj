@@ -4,7 +4,7 @@
     <Import Project="..\TestsAssemblyInfo.props" />
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
 
         <IsPackable>false</IsPackable>
@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-    <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="7.1.0.0" />
+        <PackageReference Include="SoftWell.Fpml.Confirmation.Serialization.Xml" Version="7.4.0" />
     </ItemGroup>
 
 </Project>
