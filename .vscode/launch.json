@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-worker",
-            "program": "${workspaceFolder}/src/WorkerHost/bin/Debug/net7.0/SoftWell.RtClearing.WorkerHost.dll",
+            "program": "${workspaceFolder}/src/WorkerHost/bin/Debug/net8.0/SoftWell.RtClearing.WorkerHost.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/WorkerHost",
             "console": "internalConsole",

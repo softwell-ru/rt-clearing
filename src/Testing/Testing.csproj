@@ -3,7 +3,7 @@
   <Import Project="..\AssemblyInfo.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SoftWell.RtClearing.Testing</AssemblyName>
     <RootNamespace>SoftWell.RtClearing.Testing</RootNamespace>
@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.18.4"/>
+    <PackageReference Include="Moq" Version="4.20.70"/>
   </ItemGroup>
 
 </Project>
