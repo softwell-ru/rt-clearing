@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SoftWell.Fix.Initiator.Rt" Version="7.4.0" />
+    <PackageReference Include="SoftWell.Fix.Initiator.Rt" Version="7.4.0.1" />
   </ItemGroup>
 
   <ItemGroup>

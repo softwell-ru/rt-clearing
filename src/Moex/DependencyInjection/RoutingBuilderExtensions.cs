@@ -1,4 +1,6 @@
 using QuickFix;
+using QuickFix.Logger;
+using QuickFix.Store;
 using SoftWell.RtClearing.Moex;
 using SoftWell.RtClearing.Moex.Configuration;
 using SoftWell.RtClearing.Routing.DependencyInjection;

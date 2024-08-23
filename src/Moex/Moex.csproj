@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SoftWell.Fix.Initiator" Version="7.4.0" />
+    <PackageReference Include="SoftWell.Fix.Initiator" Version="7.4.0.1" />
     <PackageReference Include="SoftWell.RtCodes.Abstractions" Version="7.4.0" />
   </ItemGroup>
 

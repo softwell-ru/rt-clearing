@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using QuickFix;
+using QuickFix.Logger;
+using QuickFix.Store;
 using SoftWell.Fix.Initiator.Rt;
 using SoftWell.RtClearing;
 using SoftWell.RtClearing.RtFix;

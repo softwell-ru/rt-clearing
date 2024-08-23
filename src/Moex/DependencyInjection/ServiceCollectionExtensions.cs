@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
 using QuickFix;
 using QuickFix.FIX50SP2;
+using QuickFix.Logger;
+using QuickFix.Store;
 using SoftWell.RtClearing;
 using SoftWell.RtClearing.Moex;
 using SoftWell.RtClearing.Moex.Configuration;
