@@ -1,4 +1,6 @@
 using QuickFix;
+using QuickFix.Logger;
+using QuickFix.Store;
 
 namespace SoftWell.RtClearing.Moex;
 
